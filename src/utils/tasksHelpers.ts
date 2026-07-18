@@ -2,7 +2,7 @@ import type { Column } from "../types/Column";
 import type { Task } from "../types/Task";
 
 export const getColumnName = (columnId: string, columns: Column[]) => {
-  return columns.find((c) => c.id === columnId)?.name ?? columnId;
+ return columns.find((c) => c.id === columnId)?.title ?? columnId;
 };
 
 // פונקציות עזר לקביעת צבעים לפי סטטוס ועדיפות
