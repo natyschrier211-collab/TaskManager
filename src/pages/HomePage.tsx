@@ -11,6 +11,8 @@ import {
   Alert,
 } from "@mui/material";
 
+import WelcomePage from "../pages/WelcomePage";
+
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
 import ViewColumnIcon from "@mui/icons-material/ViewColumn";
@@ -218,6 +220,9 @@ if (showOnlySaved) {
       </Box>
     );
   }
+  if (!user) {
+  return <WelcomePage />;
+}
 const handleDeleteBoardClick = (boardId: string) => {
   const hasColumnsInBoard = columns.some(
     (column) => column.boardId === boardId

@@ -1,9 +1,12 @@
-import { Box, Button, TextField } from "@mui/material";
+
+import { 
+  Box, Button, TextField, Typography, Container, Paper, Grid, useTheme, Link as MuiLink
+} from "@mui/material";
 import { useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import { useUser } from "../providers/UserProvider";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import ROUTES from "../router/routes";
 
 const userSchema = Joi.object({
@@ -35,7 +38,7 @@ const userSchema = Joi.object({
   }),
 
   phone: Joi.string()
-    .pattern(/^[0-9\-\+]{9,15}$/) // מאפשר מספרים, מקפים ופלוס, בין 9 ל-15 תווים
+    .pattern(/^[0-9\-\+]{9,15}$/)
     .required()
     .messages({
       "string.empty": "מספר טלפון הוא שדה חובה",
@@ -51,7 +54,9 @@ const userSchema = Joi.object({
 });
 
 function RegisterPage() {
-  // 2. חיבור ה-Resolver ל-useForm
+  const theme = useTheme();
+  const isDark = theme.palette.mode === "dark";
+
   const {
     register,
     handleSubmit,
@@ -70,79 +75,187 @@ function RegisterPage() {
   if (user) {
     return <Navigate to={ROUTES.HOME} replace />;
   }
+
+  // סטייל מותאם לשדות קלט לפי ערכת הנושא
+  const textFieldStyles = {
+    "& .MuiOutlinedInput-root": {
+      color: isDark ? "#fff" : "inherit",
+      "& fieldset": {
+        borderColor: isDark ? "rgba(255, 255, 255, 0.2)" : "rgba(0, 0, 0, 0.2)",
+      },
+      "&:hover fieldset": {
+        borderColor: isDark ? "rgba(255, 255, 255, 0.5)" : "rgba(0, 0, 0, 0.5)",
+      },
+    },
+    "& .MuiInputLabel-root": {
+      color: isDark ? "rgba(255, 255, 255, 0.7)" : "inherit",
+    },
+  };
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Box
+    <Container
+      maxWidth={false}
+      disableGutters
+      sx={{
+        minHeight: "calc(100vh - 90px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        background: isDark
+          ? "linear-gradient(135deg, #090E1A 0%, #111827 50%, #1E1B4B 100%)"
+          : "linear-gradient(135deg, #F3F6F9 0%, #FFFFFF 50%, #E7EBF0 100%)",
+        py: 4,
+        px: 2,
+      }}
+    >
+      <Paper
+        elevation={isDark ? 0 : 4}
         sx={{
-          display: "flex",
-          flexDirection: "column",
-          gap: 2,
-          maxWidth: 300,
-          mt: 4,
+          p: { xs: 4, md: 5 },
+          width: "100%",
+          maxWidth: 600, // קצת יותר רחב כדי לאפשר שדות זה לצד זה
+          background: isDark ? "rgba(255, 255, 255, 0.03)" : "#ffffff",
+          border: isDark ? "1px solid rgba(255, 255, 255, 0.1)" : "none",
+          borderRadius: 4,
+          backdropFilter: isDark ? "blur(10px)" : "none",
         }}
       >
-        {/* שדה אימייל */}
+        <Box sx={{ textAlign: "center", mb: 4 }}>
+          <Typography
+            variant="h4"
+           
+            sx={{
+              color: isDark ? "#fff" : "#111827",
+              mb: 1,
+            }}
+          >
+            יצירת משתמש חדש
+          </Typography>
+          <Typography variant="body1" sx={{ color: isDark ? "rgba(255,255,255,0.6)" : "text.secondary" }}>
+            הצטרפו אלינו והתחילו לנהל את המשימות שלכם
+          </Typography>
+        </Box>
 
-        <TextField
-          {...register("email")}
-          placeholder="Email"
-          error={!!errors.email} // צובע באדום אם יש שגיאה
-          helperText={errors.email?.message as string} // מציג את הודעת השגיאה
-        />
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <Grid container spacing={3}>
+            {/* שורה ראשונה: שם פרטי ושם משפחה */}
+            <Grid >
+              <TextField
+                {...register("firstName")}
+                label="שם פרטי"
+                fullWidth
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message as string}
+                sx={textFieldStyles}
+              />
+            </Grid>
+            <Grid >
+              <TextField
+                {...register("lastName")}
+                label="שם משפחה"
+                fullWidth
+                error={!!errors.lastName}
+                helperText={errors.lastName?.message as string}
+                sx={textFieldStyles}
+              />
+            </Grid>
 
-        {/* שדה סיסמה */}
+            {/* שורה שנייה: אימייל וסיסמה */}
+            <Grid >
+              <TextField
+                {...register("email")}
+                label="אימייל"
+                type="email"
+                fullWidth
+                error={!!errors.email}
+                helperText={errors.email?.message as string}
+                sx={textFieldStyles}
+              />
+            </Grid>
+            <Grid >
+              <TextField
+                {...register("password")}
+                label="סיסמה"
+                type="password"
+                fullWidth
+                error={!!errors.password}
+                helperText={errors.password?.message as string}
+                sx={textFieldStyles}
+              />
+            </Grid>
 
-        <TextField
-          {...register("password")}
-          placeholder="Password"
-          type="password"
-          error={!!errors.password}
-          helperText={errors.password?.message as string}
-        />
-        {/* שדה שם פרטי */}
-        <TextField
-          {...register("firstName")}
-          placeholder="First Name"
-          fullWidth
-          error={!!errors.firstName}
-          helperText={errors.firstName?.message as string}
-        />
+            {/* שורה שלישית: טלפון */}
+            <Grid >
+              <TextField
+                {...register("phone")}
+                label="מספר טלפון"
+                type="tel"
+                fullWidth
+                error={!!errors.phone}
+                helperText={errors.phone?.message as string}
+                sx={textFieldStyles}
+              />
+            </Grid>
 
-        {/* שדה שם משפחה */}
-        <TextField
-          {...register("lastName")}
-          placeholder="Last Name"
-          fullWidth
-          error={!!errors.lastName}
-          helperText={errors.lastName?.message as string}
-        />
+            {/* שורה רביעית: כתובת */}
+            <Grid >
+              <TextField
+                {...register("address")}
+                label="כתובת מגורים"
+                multiline
+                rows={2}
+                fullWidth
+                error={!!errors.address}
+                helperText={errors.address?.message as string}
+                sx={textFieldStyles}
+              />
+            </Grid>
 
-        {/* שדה טלפון */}
-        <TextField
-          {...register("phone")}
-          placeholder="Phone Number"
-          type="tel"
-          fullWidth
-          error={!!errors.phone}
-          helperText={errors.phone?.message as string}
-        />
+            {/* כפתור שליחה */}
+            <Grid  sx={{ mt: 2 }}>
+              <Button
+                variant="contained"
+                type="submit"
+                fullWidth
+                size="large"
+                sx={{
+                  py: 1.5,
+                  fontSize: "1.1rem",
+                  fontWeight: "bold",
+                  borderRadius: 3,
+                  background: "linear-gradient(90deg, #4F46E5, #7C3AED)",
+                  boxShadow: "0 4px 14px 0 rgba(79, 70, 229, 0.39)",
+                  "&:hover": {
+                    background: "linear-gradient(90deg, #4338CA, #6D28D9)",
+                    boxShadow: "0 6px 20px rgba(79, 70, 229, 0.23)",
+                  },
+                }}
+              >
+                הרשמה
+              </Button>
+            </Grid>
+          </Grid>
+        </form>
 
-        {/* שדה כתובת מגורים */}
-        <TextField
-          {...register("address")}
-          placeholder="Address"
-          multiline // מאפשר לכתובת ארוכה להתפרס על כמה שורות אם תרצה
-          rows={2}
-          fullWidth
-          error={!!errors.address}
-          helperText={errors.address?.message as string}
-        />
-
-        <Button variant="contained" type="submit">
-          Sign up
-        </Button>
-      </Box>
-    </form>
+        <Box sx={{ textAlign: "center", mt: 4 }}>
+          <Typography variant="body2" sx={{ color: isDark ? "rgba(255,255,255,0.7)" : "text.secondary" }}>
+            כבר יש לך חשבון?{" "}
+            <MuiLink
+              component={Link}
+              to={ROUTES.LOGIN}
+              sx={{
+                color: isDark ? "#A78BFA" : "#4F46E5",
+                fontWeight: "bold",
+                textDecoration: "none",
+                "&:hover": { textDecoration: "underline" },
+              }}
+            >
+              התחבר כאן
+            </MuiLink>
+          </Typography>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 

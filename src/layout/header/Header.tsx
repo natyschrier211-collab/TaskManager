@@ -1,88 +1,225 @@
 import {
   AppBar,
-  Toolbar,
-  Typography,
-  Button,
+  Avatar,
   Box,
+  Button,
   IconButton,
+  Toolbar,
+  Tooltip,
+  Typography,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import NavItem from "../../router/NavItem";
-import ROUTES from "../../router/routes";
+
+import {
+  Brightness4,
+  Brightness7,
+  Login,
+  Logout,
+  PersonAdd,
+  TaskAlt,
+} from "@mui/icons-material";
+
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
+import ROUTES from "../../router/routes";
+
 import {
   ProjectThemeContext,
   type ThemeContextType,
 } from "../../providers/ProjectThemeProvider";
-import { Brightness4, Brightness7 } from "@mui/icons-material";
-import { useContext } from "react";
+
 import { useUser } from "../../providers/UserProvider";
+
+function getGreeting() {
+  const hour = new Date().getHours();
+
+  if (hour >= 5 && hour < 12) {
+    return "בוקר טוב";
+  }
+
+  if (hour >= 12 && hour < 17) {
+    return "צהריים טובים";
+  }
+
+  if (hour >= 17 && hour < 21) {
+    return "ערב טוב";
+  }
+
+  return "לילה טוב";
+}
+
+function getFormattedDate() {
+  return new Intl.DateTimeFormat("he-IL", {
+    weekday: "long",
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  }).format(new Date());
+}
+
 function Header() {
   const navigate = useNavigate();
+
   const { isDark, toggleMode } = useContext(
     ProjectThemeContext,
   ) as ThemeContextType;
 
   const { user, logout } = useUser();
 
+  const greeting = getGreeting();
+  const formattedDate = getFormattedDate();
+
   return (
-    <AppBar position="static" color="primary">
-      <Toolbar sx={{ justifyContent: "space-between" }}>
-        <IconButton
-          size="large"
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          sx={{ mr: 2, display: { xs: "block", md: "none" } }}
+    <AppBar
+      position="static"
+      elevation={0}
+      sx={{
+        backgroundColor: "background.paper",
+        color: "text.primary",
+        borderBottom: 1,
+        borderColor: "divider",
+      }}
+    >
+      <Toolbar
+        sx={{
+          minHeight: { xs: 72, md: 88 },
+          px: { xs: 2, md: 4 },
+          display: "grid",
+          gridTemplateColumns: {
+            xs: "1fr auto",
+            md: "1fr 1fr 1fr",
+          },
+          alignItems: "center",
+          gap: 2,
+        }}
+      >
+        <Box
+          onClick={() => navigate(ROUTES.HOME)}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            gap: 1.2,
+            cursor: "pointer",
+            justifySelf: "start",
+          }}
         >
-          <MenuIcon />
-        </IconButton>
-        <Typography variant="h6" component="div">
-          My Logo
-        </Typography>
-        <Box sx={{ display: "flex" }}>
-          <Box sx={{ display: { xs: "none", md: "block" } }}>
-            <NavItem to={ROUTES.HOME} label="Home" />
-            <NavItem to={ROUTES.ABOUT} label="About" />
-            <NavItem to={ROUTES.CONTACT} label="Contact" />
+          <Avatar
+            sx={{
+              width: 42,
+              height: 42,
+              bgcolor: "primary.main",
+            }}
+          >
+            <TaskAlt />
+          </Avatar>
+
+          <Box>
+            <Typography
+              variant="h6"
+              sx={{ lineHeight: 1.1 }}
+            >
+              Task Manager
+            </Typography>
+
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
+              ניהול משימות חכם ופשוט
+            </Typography>
           </Box>
-          {user ? (
+        </Box>
+
+        {user && (
+          <Box
+            sx={{
+              display: { xs: "none", md: "block" },
+              textAlign: "center",
+              justifySelf: "center",
+            }}
+          >
+            <Typography variant="subtitle1" >
+              {greeting}
+            </Typography>
+
+            <Typography variant="body2" color="text.secondary">
+              {formattedDate}
+            </Typography>
+          </Box>
+        )}
+
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifySelf: "end",
+            gap: 1,
+          }}
+        >
+          {!user ? (
             <>
               <Button
-                onClick={() => logout()}
-                variant="outlined"
-                color="inherit"
-                sx={{ ml: 2 }}
+                variant="text"
+                startIcon={<Login />}
+                onClick={() => navigate(ROUTES.LOGIN)}
+                sx={{
+                  display: { xs: "none", sm: "inline-flex" },
+                }}
               >
-                Log Out
+                התחברות
+              </Button>
+
+              <Button
+                variant="contained"
+                startIcon={<PersonAdd />}
+                onClick={() => navigate(ROUTES.REGISTER)}
+                sx={{
+                  display: { xs: "none", sm: "inline-flex" },
+                  borderRadius: 3,
+                }}
+              >
+                הרשמה
               </Button>
             </>
           ) : (
             <>
-              <Button
-                onClick={() => navigate(ROUTES.LOGIN)}
-                variant="outlined"
-                color="inherit"
-                sx={{ ml: 2 }}
+              <Avatar
+                sx={{
+                  width: 38,
+                  height: 38,
+                  bgcolor: "secondary.main",
+                  fontWeight: 700,
+                }}
               >
-                Log In
-              </Button>
-              <Button
-                onClick={() => navigate(ROUTES.REGISTER)}
-                variant="outlined"
-                color="inherit"
-                sx={{ ml: 2 }}
-              >
-                Register
-              </Button>
+                {user.email?.charAt(0).toUpperCase() ?? "U"}
+              </Avatar>
+
+              <Tooltip title="התנתקות">
+                <IconButton
+                  onClick={() => logout()}
+                  color="inherit"
+                  aria-label="logout"
+                >
+                  <Logout />
+                </IconButton>
+              </Tooltip>
             </>
           )}
-          <IconButton onClick={toggleMode} color="inherit">
-            {isDark ? <Brightness7 /> : <Brightness4 />}
-          </IconButton>
+
+          <Tooltip title={isDark ? "מצב בהיר" : "מצב כהה"}>
+            <IconButton
+              onClick={toggleMode}
+              color="inherit"
+              aria-label="toggle theme"
+            >
+              {isDark ? <Brightness7 /> : <Brightness4 />}
+            </IconButton>
+          </Tooltip>
         </Box>
       </Toolbar>
     </AppBar>
   );
 }
+
 export default Header;
