@@ -34,22 +34,22 @@ function getGreeting() {
   const hour = new Date().getHours();
 
   if (hour >= 5 && hour < 12) {
-    return "בוקר טוב";
+    return "Good Morning";
   }
 
   if (hour >= 12 && hour < 17) {
-    return "צהריים טובים";
+    return "Good Afternoon";
   }
 
   if (hour >= 17 && hour < 21) {
-    return "ערב טוב";
+    return "Good Evening";
   }
 
-  return "לילה טוב";
+  return "Good Night";
 }
 
 function getFormattedDate() {
-  return new Intl.DateTimeFormat("he-IL", {
+  return new Intl.DateTimeFormat("en", {
     weekday: "long",
     day: "numeric",
     month: "long",
@@ -64,7 +64,7 @@ function Header() {
     ProjectThemeContext,
   ) as ThemeContextType;
 
-  const { user, logout } = useUser();
+  const { user,userData, logout } = useUser();
 
   const greeting = getGreeting();
   const formattedDate = getFormattedDate();
@@ -139,11 +139,21 @@ function Header() {
               justifySelf: "center",
             }}
           >
-            <Typography variant="subtitle1" >
-              {greeting}
-            </Typography>
+     <Typography variant="h6" sx={{ fontWeight: 550 }}>
+  <Box component="span" sx={{ color: "primary.main" }}>
+    {greeting}
+  </Box>
 
-            <Typography variant="body2" color="text.secondary">
+  {userData && (
+    <Box component="span" sx={{ color: "text.primary" }}>
+      {`, ${userData.firstName} ${userData.lastName}`}
+    </Box>
+  )}
+</Typography>
+
+            <Typography variant="body2" color="text.secondary"   sx={{
+    fontWeight: 550,
+  }}>
               {formattedDate}
             </Typography>
           </Box>

@@ -18,6 +18,9 @@ import {
 import { addUser } from "../services/usersDataServiceFireBase";
 import type { User as AppUser } from "../types/User";
 import { SnackContext } from "./SnackProvider";
+import { doc,getDoc, getFirestore } from "firebase/firestore";
+
+
 
 
 
@@ -34,6 +37,7 @@ type RegisterUser = {
 
 const UserContext = createContext<{
   user: FirebaseUser | null;
+  userData: AppUser | null;
   signup: (userData: RegisterUser) => Promise<void>;
   login: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
@@ -42,9 +46,13 @@ const UserContext = createContext<{
 
 function UserProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<FirebaseUser | null>(null);
+  const [userData, setUserData] = useState<AppUser | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
 
-  const auth = getAuth(app);
+const auth = getAuth(app);
+const db = getFirestore(app)
+
+
   
 const snackContext = useContext(SnackContext) as {
   raiseSnack: (
@@ -128,9 +136,21 @@ const login = useCallback(
   }, [auth]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth,(currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser as any | null);
+      if (!currentUser){
+        setUserData(null)
+        return;
+      }
+      
+      const userDocRef = doc(db, "users" , currentUser.uid)
+      const userSnapshot = await getDoc(userDocRef)
+      if(userSnapshot.exists()){
+        setUserData(userSnapshot.data() as AppUser)
+      }
+
       setIsAuthLoading(false);
+
     });
 
     return unsubscribe;
@@ -138,7 +158,7 @@ const login = useCallback(
 
   return (
     <UserContext.Provider
-      value={{ user, signup, login, logout, isAuthLoading }}
+      value={{ user, userData , signup, login, logout, isAuthLoading}}
     >
       {children}
     </UserContext.Provider>
