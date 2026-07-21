@@ -38,17 +38,24 @@ function Column({
 
   return (
     <Paper
-      elevation={2}
+      elevation={0}
       sx={{
-        minWidth: 280,
+      minWidth: 330,
         maxWidth: 320,
         flexShrink: 0,
         display: "flex",
         flexDirection: "column",
-        bgcolor: isDropTarget ? "action.hover" : "background.paper",
-        transition: "background-color 0.2s",
+       bgcolor: isDropTarget
+  ? "rgba(124, 58, 237, 0.08)"
+  : "background.paper",borderRadius: 4,
+        transition: "all 0.25s ease",
+        boxShadow: "0 8px 24px rgba(0,0,0,0.08)",
+        "&:hover": {
+  transform: "translateY(-4px)",
+},
       }}
     >
+      
       <Box
         sx={{
           p: 1.5,
@@ -59,9 +66,38 @@ function Column({
           justifyContent: "space-between",
         }}
       >
-        <Typography variant="h6" noWrap>
-          {column.title}
-        </Typography>
+    
+   <Box
+  sx={{
+    display: "flex",
+    alignItems: "center",
+    gap: 1,
+    minWidth: 0,
+  }}
+>
+  
+  <Typography variant="h6" noWrap>
+    {column.title}
+  </Typography>
+
+  <Box
+    component="span"
+    sx={{
+      minWidth: 26,
+      height: 26,
+      px: 0.8,
+      borderRadius: 2,
+      display: "grid",
+      placeItems: "center",
+      bgcolor: "rgba(124, 58, 237, 0.1)",
+      color: "primary.main",
+      fontSize: "0.8rem",
+      fontWeight: 700,
+    }}
+  >
+    {tasks.length}
+  </Box>
+</Box>
 
         <Box>
           <IconButton
@@ -91,6 +127,7 @@ function Column({
         ref={ref}
         sx={{
           p: 1.5,
+          bgcolor: "grey.50",
           flex: 1,
           minHeight: 200,
           display: "flex",

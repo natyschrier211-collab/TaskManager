@@ -6,6 +6,9 @@ import type { Task } from "../types/Task";
 import type { User } from "../types/User";
 import Column from "./Column";
 
+// 1. ייבוא ספק המשתמש לבדיקת הרשאות
+import { useUser } from "../providers/UserProvider";
+
 interface KanbanBoardProps {
   columns: ColumnType[];
   tasks: Task[];
@@ -16,13 +19,13 @@ interface KanbanBoardProps {
   onEditTask: (data: Task) => void;
   handleDeleteTask: (id: string) => void;
   toggleSavedTask: (id: string) => void;
-    users: User[];
+  users: User[];
 }
 
 function KanbanBoard({
   columns,
   tasks,
-    users,
+  users,
   columnIds,
   onMoveTask,
   onEditColumn,
@@ -31,6 +34,10 @@ function KanbanBoard({
   handleDeleteTask,
   toggleSavedTask,
 }: KanbanBoardProps) {
+  
+  // 2. שולפים את המשתמש הנוכחי ואת התפקיד שלו
+  const { user, userData } = useUser();
+
   return (
     <DragDropProvider
       onDragEnd={(event) => {
@@ -46,6 +53,25 @@ function KanbanBoard({
         ) {
           return;
         }
+
+        // ==========================================
+        // 3. חסימת גרירה למי שאין לו הרשאה
+        // ==========================================
+        
+        // מוצאים את המשימה שכרגע מנסים לגרור מתוך מערך המשימות שלנו
+        const draggedTask = tasks.find((t) => t.id === String(taskId));
+        
+        if (draggedTask) {
+          // בודקים אם המשתמש הוא היוצר של המשימה או מנהל מערכת
+          const canMove = draggedTask.userId === user?.uid || userData?.role === "admin";
+          
+          if (!canMove) {
+            // חותכים את הפונקציה ולא מפעילים את onMoveTask
+            console.warn("אין לך הרשאה להעביר משימה זו");
+            return;
+          }
+        }
+        // ==========================================
 
         onMoveTask(String(taskId), String(targetId));
       }}
@@ -65,13 +91,12 @@ function KanbanBoard({
             column={column}
             tasks={tasks.filter((t) => t.columnId === column.id)}
             columns={columns}
-             users={users}
+            users={users}
             onEditColumn={onEditColumn}
             onDeleteColumn={onDeleteColumn}
             onEditTask={onEditTask}
             handleDeleteTask={handleDeleteTask}
             toggleSavedTask={toggleSavedTask}
-           
           />
         ))}
       </Box>

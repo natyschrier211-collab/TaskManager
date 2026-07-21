@@ -81,8 +81,7 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
         },
 
         typography: {
-          fontFamily:
-            '"Rubik", "Arial", "Helvetica", sans-serif',
+          fontFamily: '"Rubik", "Arial", "Helvetica", sans-serif',
 
           h1: {
             fontWeight: 800,
@@ -133,8 +132,7 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
                 minWidth: 320,
                 minHeight: "100vh",
                 direction: "rtl",
-                transition:
-                  "background-color 250ms ease, color 250ms ease",
+                transition: "background-color 250ms ease, color 250ms ease",
               },
 
               "#root": {
@@ -143,6 +141,37 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
 
               "::selection": {
                 backgroundColor: "rgba(124, 58, 237, 0.28)",
+              },
+
+              // ==========================================
+              // עיצוב פס הגלילה (Scrollbar)
+              // ==========================================
+              "::-webkit-scrollbar": {
+                width: "8px",
+                height: "8px",
+              },
+              "::-webkit-scrollbar-track": {
+                background: isDark ? "#090E1A" : "#F5F7FB",
+              },
+              "::-webkit-scrollbar-thumb": {
+                background: isDark 
+                  ? "rgba(255, 255, 255, 0.15)" 
+                  : "rgba(15, 23, 42, 0.15)",
+                borderRadius: "10px",
+                // יוצר אפקט של ריווח פנימי (Padding) בתוך הפס
+                border: `2px solid ${isDark ? "#090E1A" : "#F5F7FB"}`,
+              },
+              "::-webkit-scrollbar-thumb:hover": {
+                background: isDark 
+                  ? "rgba(255, 255, 255, 0.3)" 
+                  : "rgba(15, 23, 42, 0.3)",
+              },
+              // פיירפוקס תומך בדרך שונה
+              "": {
+                scrollbarWidth: "thin",
+                scrollbarColor: isDark 
+                  ? "rgba(255, 255, 255, 0.15) #090E1A" 
+                  : "rgba(15, 23, 42, 0.15) #F5F7FB",
               },
             },
           },
@@ -170,25 +199,23 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
 
             styleOverrides: {
               root: {
-                
                 minHeight: 44,
                 borderRadius: 14,
                 paddingInline: 20,
                 transition:
                   "transform 180ms ease, box-shadow 180ms ease, background-color 180ms ease",
 
-             boxShadow: "0 10px 28px rgba(124, 58, 237, 0.18)",
+                boxShadow: "0 10px 28px rgba(124, 58, 237, 0.18)",
 
-"&:hover": {
-  transform: "translateY(-2px)",
-  boxShadow: "0 14px 34px rgba(124, 58, 237, 0.28)",
-},
+                "&:hover": {
+                  transform: "translateY(-2px)",
+                  boxShadow: "0 14px 34px rgba(124, 58, 237, 0.28)",
+                },
 
-"&:active": {
-  transform: "translateY(0)",
-},
+                "&:active": {
+                  transform: "translateY(0)",
+                },
               },
-
             },
           },
 
@@ -196,8 +223,7 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
             styleOverrides: {
               root: {
                 borderRadius: 12,
-                transition:
-                  "transform 180ms ease, background-color 180ms ease",
+                transition: "transform 180ms ease, background-color 180ms ease",
 
                 "&:hover": {
                   transform: "translateY(-1px)",
@@ -227,8 +253,7 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
               root: {
                 borderRadius: 18,
                 backgroundImage: "none",
-                transition:
-                  "transform 200ms ease, box-shadow 200ms ease",
+                transition: "transform 200ms ease, box-shadow 200ms ease",
 
                 "&:hover": {
                   transform: "translateY(-4px)",
@@ -245,8 +270,7 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
               root: {
                 borderRadius: 12,
                 fontWeight: 600,
-                transition:
-                  "transform 180ms ease, background-color 180ms ease",
+                transition: "transform 180ms ease, background-color 180ms ease",
 
                 "&:hover": {
                   transform: "translateY(-1px)",
@@ -274,12 +298,10 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
             styleOverrides: {
               root: {
                 borderRadius: 14,
-                transition:
-                  "box-shadow 180ms ease, border-color 180ms ease",
+                transition: "box-shadow 180ms ease, border-color 180ms ease",
 
                 "&.Mui-focused": {
-                  boxShadow:
-                    "0 0 0 4px rgba(124, 58, 237, 0.12)",
+                  boxShadow: "0 0 0 4px rgba(124, 58, 237, 0.12)",
                 },
               },
             },
@@ -288,15 +310,12 @@ function ProjectThemeProvider({ children }: { children: ReactNode }) {
           MuiFab: {
             styleOverrides: {
               root: {
-                boxShadow:
-                  "0 14px 34px rgba(124, 58, 237, 0.30)",
-                transition:
-                  "transform 180ms ease, box-shadow 180ms ease",
+                boxShadow: "0 14px 34px rgba(124, 58, 237, 0.30)",
+                transition: "transform 180ms ease, box-shadow 180ms ease",
 
                 "&:hover": {
                   transform: "translateY(-3px) scale(1.03)",
-                  boxShadow:
-                    "0 18px 42px rgba(124, 58, 237, 0.40)",
+                  boxShadow: "0 18px 42px rgba(124, 58, 237, 0.40)",
                 },
               },
             },

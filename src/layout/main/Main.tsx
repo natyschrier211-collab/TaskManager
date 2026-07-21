@@ -6,9 +6,10 @@ function Main({ children }: { children: ReactNode }) {
     <Box
       component="main"
       sx={{
-        minHeight: "80vh", // מגדיר גובה עמוד
-        backgroundColor: "#f5f5f5", // צבע רקע
-        padding: 2,
+        minHeight: "calc(100vh - 130px)", // חישוב חכם שמשאיר מקום להדר ולפוטר
+        display: "flex",
+        flexDirection: "column",
+        // העפנו את ה-padding ואת ה-backgroundColor הקשיח!
       }}
     >
       {children}

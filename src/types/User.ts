@@ -1,4 +1,5 @@
 export type User = {
+  role: string;
   id: string;
   firstName: string;
   lastName: string;

@@ -30,7 +30,7 @@ interface TaskProps {
   users: User[];
   onEditTask: (task: Task) => void;
   handleDeleteTask: (id: string) => void;
-toggleSavedTask: (id: string) => void;
+  toggleSavedTask: (id: string) => void;
 }
 
 function TaskCard({
@@ -40,17 +40,17 @@ function TaskCard({
   handleDeleteTask,
   toggleSavedTask,
 }: TaskProps) {
-  const { user } = useUser();
-  console.log("users", users);
+  // מושכים גם את userData כדי שנוכל לבדוק תפקיד (Role)
+  const { user, userData } = useUser();
   const navigate = useNavigate();
 
-  const isSaved =
-  !!user && task.savedBy.includes(user.uid);
+  const isSaved = !!user && task.savedBy.includes(user.uid);
 
-  const assignedUser = users.find(
-  (u) => u.id === task.assignedUserId
-);
- 
+  const assignedUser = users.find((u) => u.id === task.assignedUserId);
+
+  // בדיקת הרשאות: האם המשתמש הוא היוצר של המשימה או אדמין
+  const canEditOrDelete = task.userId === user?.uid || userData?.role === "admin";
+
   return (
     <Card
       sx={{
@@ -59,8 +59,9 @@ function TaskCard({
         flexDirection: "column",
         justifyContent: "space-between",
         bgcolor: "background.paper",
+        boxShadow: "0 10px 30px rgba(15, 23, 42, 0.08)",
       }}
-      elevation={3}
+      elevation={0}
     >
       <CardActionArea
         onClick={() => {
@@ -72,21 +73,17 @@ function TaskCard({
             {task.title}
           </Typography>
 
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ mb: 2 }}
-          >
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
             {task.description}
             {assignedUser && (
-  <Typography
-    variant="caption"
-    color="primary"
-    sx={{ mt: 1 }}
-  >
-    👤 {assignedUser.firstName} {assignedUser.lastName}
-  </Typography>
-)}
+              <Typography
+                variant="caption"
+                color="primary"
+                sx={{ mt: 1, display: "block" }} // הוספנו display: block כדי שיירד שורה
+              >
+                👤 {assignedUser.firstName} {assignedUser.lastName}
+              </Typography>
+            )}
           </Typography>
         </CardContent>
 
@@ -100,6 +97,7 @@ function TaskCard({
         </Box>
       </CardActionArea>
 
+      {/* האזור התחתון של הכרטיסייה מוצג רק למשתמשים מחוברים */}
       {user && (
         <CardActions
           sx={{
@@ -113,36 +111,40 @@ function TaskCard({
           }}
         >
           <Box>
-            <IconButton
-              onClick={() => onEditTask(task)}
-              aria-label="Edit task"
-            >
-              <EditIcon />
-            </IconButton>
+            {/* מציגים את הפח והעיפרון רק אם יש הרשאה */}
+            {canEditOrDelete && (
+              <>
+                <IconButton
+                  onClick={() => onEditTask(task)}
+                  aria-label="Edit task"
+                >
+                  <EditIcon />
+                </IconButton>
 
-            <IconButton
-              onClick={() => handleDeleteTask(task.id)}
-              aria-label="Delete task"
-            >
-              <ClearIcon sx={{ color: "red" }} />
-            </IconButton>
+                <IconButton
+                  onClick={() => handleDeleteTask(task.id)}
+                  aria-label="Delete task"
+                >
+                  <ClearIcon sx={{ color: "red" }} />
+                </IconButton>
+              </>
+            )}
           </Box>
 
-        <Box>
-  <IconButton onClick={() => toggleSavedTask(task.id)}>
-    {isSaved ? (
-      <BookmarkIcon color="primary" />
-    ) : (
-      <BookmarkBorderIcon />
-    )}
-  </IconButton>
-</Box>
+          <Box>
+            {/* כפתור השמירה נשאר גלוי לכולם */}
+            <IconButton onClick={() => toggleSavedTask(task.id)}>
+              {isSaved ? (
+                <BookmarkIcon color="primary" />
+              ) : (
+                <BookmarkBorderIcon />
+              )}
+            </IconButton>
+          </Box>
         </CardActions>
       )}
     </Card>
   );
-
 }
-
 
 export default memo(TaskCard);
