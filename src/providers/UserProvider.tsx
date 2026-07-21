@@ -80,6 +80,7 @@ const signup = useCallback(
         address: userData.address,
         email: userData.email,
         phone: userData.phone,
+        role: ""
       };
 
       await addUser(newUser);
