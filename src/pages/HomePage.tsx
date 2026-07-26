@@ -390,32 +390,44 @@ function HomePage() {
               />
               
               {/* כפתור הוספת עמודה - יושב ישר בהמשך לעמודות */}
-              <Paper
-                elevation={0}
-                onClick={handleOpenAddColumn}
-                sx={{
-                  minWidth: 280,
-                  height: 60,
-                  ml: 2,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  cursor: "pointer",
-                  borderRadius: 3,
-                  background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
-                  border: `2px dashed ${isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"}`,
-                  transition: "all 0.2s ease",
-                  "&:hover": {
-                    background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
-                    borderColor: isDark ? "#A78BFA" : "#4F46E5",
-                  }
-                }}
-              >
-                <AddIcon sx={{ mr: 1, color: isDark ? "#A78BFA" : "#4F46E5" }} />
-                <Typography sx={{ fontWeight: "bold", color: isDark ? "#A78BFA" : "#4F46E5" }}>
-                  הוסף עמודה חדשה
-                </Typography>
-              </Paper>
+             <Paper
+  elevation={0}
+  onClick={handleOpenAddColumn}
+  sx={{
+    minWidth: { xs: 160, sm: 200 }, // צר יותר במובייל
+    height: { xs: 48, sm: 60 }, // נמוך יותר במובייל
+    ml: { xs: 1.5, sm: 2 }, // קצת פחות מרווח במובייל
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    borderRadius: 3,
+    background: isDark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.02)",
+    border: `2px dashed ${isDark ? "rgba(255,255,255,0.2)" : "rgba(0,0,0,0.2)"}`,
+    transition: "all 0.2s ease",
+    "&:hover": {
+      background: isDark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.05)",
+      borderColor: isDark ? "#A78BFA" : "#4F46E5",
+    }
+  }}
+>
+  <AddIcon 
+    sx={{ 
+      mr: 1, 
+      color: isDark ? "#A78BFA" : "#4F46E5",
+      fontSize: { xs: 20, sm: 24 } // אייקון קטן יותר במובייל
+    }} 
+  />
+  <Typography 
+    sx={{ 
+      fontWeight: "bold", 
+      color: isDark ? "#A78BFA" : "#4F46E5",
+      fontSize: { xs: "0.85rem", sm: "1rem" } // פונט קטן יותר במובייל
+    }}
+  >
+    הוסף עמודה חדשה
+  </Typography>
+</Paper>
             </Box>
           </>
         )}
