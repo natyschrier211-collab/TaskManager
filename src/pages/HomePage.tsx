@@ -81,18 +81,15 @@ function HomePage() {
 
   const columnIds = useMemo(() => new Set(columns.map((column) => column.id)), [columns]);
 
+ 
   useEffect(() => {
+    // אם אין משתמש מחובר, תעצור כאן ואל תנסה למשוך נתונים
+    if (!user) return;
+
     handleGetTasks();
     handleGetColumns();
     handleGetBoards();
-  }, [handleGetTasks, handleGetColumns, handleGetBoards]);
-
-  // קביעת לוח ברירת מחדל אם אין לוח נבחר ויש לוחות זמינים
-  useEffect(() => {
-    if (boards.length > 0 && !selectedBoardId) {
-      setSelectedBoardId(boards[0].id);
-    }
-  }, [boards, selectedBoardId]);
+  }, [user, handleGetTasks, handleGetColumns, handleGetBoards]);
 
   const handleOpenEditTask = (task: Task) => {
     setEditingTask(task);
@@ -164,6 +161,12 @@ function HomePage() {
   const hasColumns = columns.length > 0;
   const hasBoards = boards.length > 0;
 
+  // העברנו את בדיקת האורח להתחלה - אם אין יוזר, תראה מיד את עמוד הפתיחה
+  if (!user) {
+    return <WelcomePage />;
+  }
+
+  // רק אם יש יוזר מחובר נבדוק טעינה ושגיאות של משיכת נתונים
   if (isLoading) {
     return (
       <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh" }}>
@@ -179,8 +182,6 @@ function HomePage() {
       </Box>
     );
   }
-
-  if (!user) return <WelcomePage />;
 
   return (
     <Fade in={true} timeout={800}>
@@ -315,7 +316,7 @@ function HomePage() {
                   </IconButton>
                 </Tooltip>
 
-                {/* כפתורי עריכה/מחיקה ללוח הפעיל (מופיע רק אם המשתמש הוא הבעלים) */}
+                {/* כפתורי עריכה/מחיקה ללוח הפעיל (מופיע רק אם המשתמש הוא הבעלים או מנהל) */}
                 {selectedBoardId && (boards.find(b => b.id === selectedBoardId)?.userId === user?.uid || userData?.role === "admin") && (
                   <Box sx={{ display: "flex", ml: 2, borderRight: 1, borderColor: 'divider', pr: 2 }}>
                     <Tooltip title="ערוך לוח">
@@ -395,7 +396,7 @@ function HomePage() {
                 sx={{
                   minWidth: 280,
                   height: 60,
-                  ml: 2, // מרווח מהעמודה האחרונה
+                  ml: 2,
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
@@ -418,15 +419,16 @@ function HomePage() {
             </Box>
           </>
         )}
-{/* כפתורים צפים (FABs) */}
+        
+        {/* כפתורים צפים (FABs) */}
         <Box 
           sx={{ 
             position: "fixed", 
-            bottom: { xs: 80, sm: 90 }, // הרמנו את הכפתורים אל מעל הפוטר
+            bottom: { xs: 80, sm: 90 },
             right: { xs: 16, sm: 24 }, 
             display: "flex", 
             gap: 2,
-            zIndex: 1100 // מוודא שהכפתורים ירחפו תמיד מעל הפוטר וכל אלמנט אחר
+            zIndex: 1100
           }}
         >
           <Tooltip title="הוסף עמודה" placement="top">
