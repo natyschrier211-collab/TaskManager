@@ -29,6 +29,24 @@ function WelcomePage() {
   const theme = useTheme();
   const isDark = theme.palette.mode === "dark";
 
+  const features = [
+    {
+      icon: <SecurityRounded />,
+      title: "מאובטח",
+      description: "התחברות ושמירת מידע באמצעות Firebase.",
+    },
+    {
+      icon: <CloudDoneRounded />,
+      title: "מסונכרן",
+      description: "המידע נשמר בענן ונגיש מכל מקום.",
+    },
+    {
+      icon: <DevicesRounded />,
+      title: "מותאם לכל מסך",
+      description: "חוויית שימוש נוחה במחשב ובטלפון.",
+    },
+  ];
+
   return (
     <Box
       component="main"
@@ -37,82 +55,96 @@ function WelcomePage() {
         minHeight: "calc(100vh - 72px)",
         position: "relative",
         overflow: "hidden",
+
         display: "flex",
-        alignItems: "center",
+        alignItems: "flex-start",
+
         bgcolor: "background.default",
-        py: {
-          xs: 6,
-          md: 9,
+
+        pt: {
+          xs: 4,
+          sm: 5,
+          md: 5.5,
+        },
+
+        pb: {
+          xs: 7,
+          md: 8,
         },
 
         backgroundImage: isDark
           ? `
             radial-gradient(
-              circle at 15% 20%,
-              rgba(124, 58, 237, 0.20),
-              transparent 30%
+              circle at 15% 15%,
+              rgba(124, 58, 237, 0.18),
+              transparent 28%
             ),
             radial-gradient(
               circle at 85% 80%,
-              rgba(147, 51, 234, 0.12),
-              transparent 28%
+              rgba(147, 51, 234, 0.10),
+              transparent 25%
             )
           `
           : `
             radial-gradient(
-              circle at 15% 20%,
-              rgba(124, 58, 237, 0.12),
-              transparent 30%
+              circle at 15% 15%,
+              rgba(124, 58, 237, 0.11),
+              transparent 28%
             ),
             radial-gradient(
               circle at 85% 80%,
-              rgba(147, 51, 234, 0.08),
-              transparent 28%
+              rgba(147, 51, 234, 0.07),
+              transparent 25%
             )
           `,
       }}
     >
-      {/* אור סגול עליון */}
+      {/* תאורת רקע עליונה */}
 
       <Box
         sx={{
           position: "absolute",
-          width: 430,
-          height: 430,
+          width: 380,
+          height: 380,
+          top: -230,
+          right: -140,
+
           borderRadius: "50%",
-          top: -250,
-          right: -160,
           bgcolor: "primary.main",
-          opacity: isDark ? 0.13 : 0.08,
+          opacity: isDark ? 0.12 : 0.07,
           filter: "blur(75px)",
+
           pointerEvents: "none",
         }}
       />
 
-      {/* אור סגול תחתון */}
+      {/* תאורת רקע תחתונה */}
 
       <Box
         sx={{
           position: "absolute",
-          width: 390,
-          height: 390,
+          width: 340,
+          height: 340,
+          bottom: -230,
+          left: -130,
+
           borderRadius: "50%",
-          bottom: -240,
-          left: -150,
           bgcolor: "secondary.main",
-          opacity: isDark ? 0.11 : 0.07,
+          opacity: isDark ? 0.1 : 0.06,
           filter: "blur(80px)",
+
           pointerEvents: "none",
         }}
       />
 
-      {/* קווי רקע עדינים */}
+      {/* רשת עדינה ברקע */}
 
       <Box
         sx={{
           position: "absolute",
           inset: 0,
-          opacity: isDark ? 0.035 : 0.028,
+
+          opacity: isDark ? 0.025 : 0.018,
 
           backgroundImage: `
             linear-gradient(
@@ -127,8 +159,10 @@ function WelcomePage() {
           `,
 
           backgroundSize: "64px 64px",
+
           maskImage:
-            "linear-gradient(to bottom, transparent, black 25%, black 75%, transparent)",
+            "linear-gradient(to bottom, transparent, black 18%, black 78%, transparent)",
+
           pointerEvents: "none",
         }}
       />
@@ -141,26 +175,25 @@ function WelcomePage() {
         }}
       >
         <Stack
-  
           sx={{
             alignItems: "center",
             textAlign: "center",
-            maxWidth: 980,
+            maxWidth: 960,
             mx: "auto",
           }}
         >
-          {/* אייקון מותג */}
+          {/* אייקון המותג */}
 
           <Box
             sx={{
-              width: 72,
-              height: 72,
-              mb: 3,
+              width: 54,
+              height: 54,
+              mb: 2,
 
               display: "grid",
               placeItems: "center",
 
-              borderRadius: 4,
+              borderRadius: 3,
 
               color: "#FFFFFF",
 
@@ -168,7 +201,7 @@ function WelcomePage() {
                 "linear-gradient(135deg, #4F46E5 0%, #7C3AED 55%, #9333EA 100%)",
 
               boxShadow:
-                "0 20px 45px rgba(124, 58, 237, 0.32)",
+                "0 14px 32px rgba(124, 58, 237, 0.28)",
 
               animation:
                 "welcomeIconFloat 4s ease-in-out infinite",
@@ -179,12 +212,12 @@ function WelcomePage() {
                 },
 
                 "50%": {
-                  transform: "translateY(-7px)",
+                  transform: "translateY(-5px)",
                 },
               },
             }}
           >
-            <TaskAltRounded sx={{ fontSize: 38 }} />
+            <TaskAltRounded sx={{ fontSize: 30 }} />
           </Box>
 
           {/* תגית */}
@@ -193,9 +226,9 @@ function WelcomePage() {
             icon={<AutoAwesomeRounded />}
             label="מערכת חכמה לניהול משימות"
             sx={{
-              mb: 3,
-              minHeight: 38,
-              px: 1,
+              mb: 2.5,
+              minHeight: 36,
+              px: 0.8,
 
               borderRadius: 999,
 
@@ -207,6 +240,7 @@ function WelcomePage() {
                 : "rgba(124, 58, 237, 0.08)",
 
               border: "1px solid",
+
               borderColor: isDark
                 ? "rgba(167, 139, 250, 0.22)"
                 : "rgba(124, 58, 237, 0.16)",
@@ -219,32 +253,31 @@ function WelcomePage() {
             }}
           />
 
-          {/* כותרת */}
+          {/* כותרת ראשית */}
 
           <Typography
             component="h1"
             sx={{
               maxWidth: 960,
 
-              fontWeight: 950,
-              lineHeight: 1.03,
-              letterSpacing: "-0.045em",
+              fontWeight: 900,
+              lineHeight: 1.08,
+              letterSpacing: "-0.035em",
 
               color: "text.primary",
 
               fontSize: {
-                xs: "2.7rem",
-                sm: "4rem",
-                md: "5.4rem",
+                xs: "2.15rem",
+                sm: "3rem",
+                md: "3.85rem",
               },
             }}
           >
-            פחות עומס.
+            פחות עומס.{" "}
             <Box
               component="span"
               sx={{
-                display: "block",
-                mt: 0.5,
+                display: "inline",
 
                 background:
                   "linear-gradient(90deg, #4F46E5 0%, #7C3AED 50%, #9333EA 100%)",
@@ -263,33 +296,35 @@ function WelcomePage() {
             variant="h6"
             color="text.secondary"
             sx={{
-              maxWidth: 760,
-              mt: 3,
-              lineHeight: 1.9,
+              maxWidth: 720,
+              mt: 2.25,
+
+              lineHeight: 1.75,
               fontWeight: 400,
 
               fontSize: {
-                xs: "1rem",
-                sm: "1.15rem",
-                md: "1.3rem",
+                xs: "0.95rem",
+                sm: "1.08rem",
+                md: "1.18rem",
               },
             }}
           >
-            Task Manager מרכזת את הלוחות, העמודות והמשימות
-            שלכם במקום אחד כדי שתוכלו לעבוד בצורה מסודרת,
-            ברורה ויעילה יותר.
+            Task Manager מרכזת את הלוחות, העמודות והמשימות שלכם
+            במקום אחד, כדי שתוכלו לעבוד בצורה מסודרת, ברורה
+            ויעילה יותר.
           </Typography>
 
-          {/* כפתורים */}
+          {/* כפתורי פעולה */}
 
           <Stack
             direction={{
               xs: "column",
               sm: "row",
             }}
-            spacing={2}
+            spacing={1.5}
             sx={{
-              mt: 5,
+              mt: 3.5,
+
               width: {
                 xs: "100%",
                 sm: "auto",
@@ -305,21 +340,21 @@ function WelcomePage() {
               sx={{
                 minWidth: {
                   xs: "100%",
-                  sm: 205,
+                  sm: 195,
                 },
 
-                minHeight: 56,
-                px: 3.5,
+                minHeight: 52,
+                px: 3,
 
                 borderRadius: 3,
-                fontSize: "1rem",
+                fontSize: "0.98rem",
                 fontWeight: 850,
 
                 background:
                   "linear-gradient(90deg, #4F46E5 0%, #7C3AED 100%)",
 
                 boxShadow:
-                  "0 16px 34px rgba(124, 58, 237, 0.30)",
+                  "0 14px 30px rgba(124, 58, 237, 0.28)",
 
                 transition:
                   "transform 180ms ease, box-shadow 180ms ease",
@@ -331,7 +366,7 @@ function WelcomePage() {
                     "linear-gradient(90deg, #4338CA 0%, #6D28D9 100%)",
 
                   boxShadow:
-                    "0 22px 44px rgba(124, 58, 237, 0.38)",
+                    "0 18px 38px rgba(124, 58, 237, 0.36)",
                 },
               }}
             >
@@ -346,14 +381,14 @@ function WelcomePage() {
               sx={{
                 minWidth: {
                   xs: "100%",
-                  sm: 205,
+                  sm: 195,
                 },
 
-                minHeight: 56,
-                px: 3.5,
+                minHeight: 52,
+                px: 3,
 
                 borderRadius: 3,
-                fontSize: "1rem",
+                fontSize: "0.98rem",
                 fontWeight: 850,
                 borderWidth: 1.5,
 
@@ -393,97 +428,68 @@ function WelcomePage() {
 
               gridTemplateColumns: {
                 xs: "1fr",
-                sm: "repeat(3, minmax(0, 1fr))",
+                sm: "repeat(3,1fr)",
               },
 
               gap: 2,
-              mt: 7,
+              mt: 4,
             }}
           >
-            {[
-              {
-                icon: <SecurityRounded />,
-                title: "מאובטח",
-                description: "התחברות ושמירת מידע באמצעות Firebase.",
-              },
-              {
-                icon: <CloudDoneRounded />,
-                title: "מסונכרן",
-                description: "המידע נשמר בענן ונגיש מכל מקום.",
-              },
-              {
-                icon: <DevicesRounded />,
-                title: "מותאם לכל מסך",
-                description: "חוויית שימוש נוחה במחשב ובטלפון.",
-              },
-            ].map((feature) => (
+            {features.map((feature) => (
               <Box
                 key={feature.title}
                 sx={{
-                  p: 2.5,
+                  p: 2,
 
                   display: "flex",
                   alignItems: "center",
-                  gap: 1.7,
-
-                  textAlign: "right",
+                  gap: 1.5,
 
                   borderRadius: 3,
 
                   bgcolor: isDark
-                    ? "rgba(15, 23, 42, 0.42)"
-                    : "rgba(255, 255, 255, 0.58)",
+                    ? "rgba(255,255,255,.03)"
+                    : "rgba(255,255,255,.72)",
 
                   border: "1px solid",
+
                   borderColor: isDark
-                    ? "rgba(148, 163, 184, 0.13)"
-                    : "rgba(15, 23, 42, 0.07)",
+                    ? "rgba(255,255,255,.08)"
+                    : "rgba(0,0,0,.06)",
 
-                  backdropFilter: "blur(14px)",
-
-                  transition:
-                    "transform 180ms ease, border-color 180ms ease",
+                  transition: ".2s",
 
                   "&:hover": {
-                    transform: "translateY(-3px)",
-
-                    borderColor: isDark
-                      ? "rgba(167, 139, 250, 0.30)"
-                      : "rgba(124, 58, 237, 0.20)",
+                    transform: "translateY(-4px)",
                   },
                 }}
               >
                 <Box
                   sx={{
-                    width: 44,
-                    height: 44,
-                    flexShrink: 0,
+                    width: 42,
+                    height: 42,
 
                     display: "grid",
                     placeItems: "center",
 
-                    borderRadius: 2.5,
-
-                    color: "primary.main",
+                    borderRadius: 2,
 
                     bgcolor: isDark
-                      ? "rgba(124, 58, 237, 0.14)"
-                      : "rgba(124, 58, 237, 0.09)",
+                      ? "rgba(124,58,237,.12)"
+                      : "rgba(124,58,237,.08)",
 
-                    "& svg": {
-                      fontSize: 24,
-                    },
+                    color: "primary.main",
                   }}
                 >
                   {feature.icon}
                 </Box>
 
-                <Box>
+                <Box sx={{textAlign: "right"}}>
                   <Typography
-                    sx={{
-                      fontWeight: 850,
-                      mb: 0.3,
-                    }}
+                  sx={{
+                     fontWeight:800,
+                    mb: 0.4,
+                  }} 
                   >
                     {feature.title}
                   </Typography>
@@ -491,9 +497,6 @@ function WelcomePage() {
                   <Typography
                     variant="body2"
                     color="text.secondary"
-                    sx={{
-                      lineHeight: 1.6,
-                    }}
                   >
                     {feature.description}
                   </Typography>
@@ -506,11 +509,11 @@ function WelcomePage() {
 
           <Box
             sx={{
-              mt: 6,
-              pt: 4,
+              mt: 2,
+              pt: 2,
 
               width: "100%",
-              maxWidth: 760,
+              maxWidth: 650,
 
               borderTop: "1px solid",
               borderColor: "divider",
@@ -518,48 +521,43 @@ function WelcomePage() {
           >
             <Typography
               variant="caption"
-              color="text.secondary"
               sx={{
                 display: "block",
-                mb: 2,
+
+                mb: 1.5,
+
+                color: "text.secondary",
+
+                letterSpacing: ".15em",
 
                 fontWeight: 800,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
               }}
             >
-              נבנה באמצעות
+              BUILT WITH
             </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "center",
-                flexWrap: "wrap",
-                gap: {
-                  xs: 2,
-                  sm: 4,
-                },
-              }}
-            >
-              {[
-                "React",
-                "TypeScript",
-                "Firebase",
-                "Material UI",
-              ].map((technology) => (
-                <Typography
-                  key={technology}
-                  variant="body2"
-                  sx={{
-                    color: "text.secondary",
-                    fontWeight: 750,
-                  }}
-                >
-                  {technology}
-                </Typography>
-              ))}
-            </Box>
+<Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    gap: 4,
+    flexWrap: "nowrap",
+    whiteSpace: "nowrap",
+  }}
+>
+  {["React", "TypeScript", "Firebase", "Material UI"].map((item) => (
+    <Typography
+      key={item}
+      variant="body2"
+      sx={{
+        fontWeight: 700,
+        color: "text.secondary",
+      }}
+    >
+      {item}
+    </Typography>
+  ))}
+</Box>
           </Box>
         </Stack>
       </Container>
