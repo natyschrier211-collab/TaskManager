@@ -47,6 +47,7 @@ const handleAddBoard = useCallback(
       };
       setBoards((prev) => [...prev, newBoard]);
       raiseSnack("success", "הלוח נוסף בהצלחה");
+      return newBoard;
     } catch (err) {
       console.error(err);
       raiseSnack("error", "שגיאה בהוספת הלוח");

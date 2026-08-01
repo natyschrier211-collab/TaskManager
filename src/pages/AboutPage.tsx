@@ -37,73 +37,334 @@ const AboutPage: React.FC = () => {
           px: 2,
         }}
       >
-        <Container maxWidth="md" dir="rtl">
-          <Paper
-            elevation={isDark ? 0 : 4}
-            sx={{
-              p: { xs: 4, md: 6 },
-              borderRadius: 4,
-              background: isDark ? "rgba(255, 255, 255, 0.03)" : "#ffffff",
-              border: isDark ? "1px solid rgba(255, 255, 255, 0.1)" : "none",
-              backdropFilter: isDark ? "blur(12px)" : "none",
-              textAlign: "center",
-            }}
-          >
-            {/* כותרת ואייקון עליון */}
-            <Box sx={{ mb: 4 }}>
-              <TaskAltIcon
-                sx={{
-                  fontSize: 56,
-                  color: isDark ? "#A78BFA" : "#4F46E5",
-                  mb: 2,
-                }}
-              />
-              <Typography
-                variant="h3"
-                component="h1"
-            
-                sx={{
-                   fontWeight: "800",
-                  background: isDark
-                    ? "linear-gradient(90deg, #60A5FA, #A78BFA)"
-                    : "linear-gradient(90deg, #2563EB, #6D28D9)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  mb: 2,
-                }}
-              >
-                אודות המערכת שלנו
-              </Typography>
-            </Box>
+       <Container maxWidth="lg" dir="rtl">
+  <Paper
+    elevation={0}
+    sx={{
+      overflow: "hidden",
+      borderRadius: 6,
+      background: isDark
+        ? "rgba(255,255,255,.04)"
+        : "#ffffff",
 
-            {/* פסקאות תיאור */}
-            <Box sx={{ maxWidth: 700, mx: "auto", mb: 6 }}>
-              <Typography
-                variant="body1"
-                sx={{
-                  color: isDark ? "rgba(255,255,255,0.8)" : "text.secondary",
-                  fontSize: "1.1rem",
-                  lineHeight: 1.8,
-                  mb: 2,
-                }}
-              >
-                ברוכים הבאים למערכת ניהול המשימות שלנו. המטרה המרכזית שעמדה לנגד
-                עינינו בפיתוח המערכת היא להעניק לכם כלי פשוט ויעיל לעשות סדר
-                בבלאגן, כדי שתוכלו להתמקד במה שבאמת חשוב.
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  color: isDark ? "rgba(255,255,255,0.8)" : "text.secondary",
-                  fontSize: "1.1rem",
-                  lineHeight: 1.8,
-                }}
-              >
-                בין אם מדובר בפרויקטים אישיים, ניהול משימות שוטף או עבודה צוותית,
-                המערכת שלנו תעזור לכם לוודא ששום משימה לא נופלת בין הכיסאות.
-              </Typography>
-            </Box>
+      border: isDark
+        ? "1px solid rgba(255,255,255,.08)"
+        : "1px solid rgba(0,0,0,.05)",
 
+      backdropFilter: "blur(18px)",
+      p: {
+        xs: 4,
+        md: 6,
+      },
+    }}
+  >
+    <Box
+      sx={{
+        textAlign: "center",
+        mb: 6,
+      }}
+    >
+      <Box
+        sx={{
+          width: 90,
+          height: 90,
+          mx: "auto",
+          mb: 3,
+
+          borderRadius: 4,
+
+          display: "grid",
+          placeItems: "center",
+
+          background:
+            "linear-gradient(135deg,#4F46E5,#7C3AED)",
+
+          color: "#fff",
+
+          boxShadow:
+            "0 18px 40px rgba(124,58,237,.35)",
+        }}
+      >
+        <TaskAltIcon sx={{ fontSize: 48 }} />
+      </Box>
+
+      <Typography
+        variant="overline"
+        sx={{
+          color: "primary.main",
+          fontWeight: 800,
+          letterSpacing: "3px",
+        }}
+      >
+        TASK MANAGER
+      </Typography>
+
+      <Typography
+        variant="h2"
+        sx={{
+          mt: 2,
+          mb: 2,
+          fontWeight: 900,
+
+          fontSize: {
+            xs: "2.3rem",
+            md: "3.5rem",
+          },
+        }}
+      >
+        אודות המערכת
+      </Typography>
+
+      <Typography
+        sx={{
+          maxWidth: 720,
+          mx: "auto",
+
+          color: "text.secondary",
+
+          lineHeight: 1.9,
+
+          fontSize: {
+            xs: "1rem",
+            md: "1.15rem",
+          },
+        }}
+      >
+        Task Manager נבנתה כדי להפוך את ניהול
+        המשימות, הלוחות והפרויקטים לפשוט,
+        מהיר ונוח יותר.
+      </Typography>
+    </Box>
+    <Grid container spacing={3}>
+  {features.map((feature, index) => (
+    <Grid
+      key={index}
+      size={{
+        xs: 12,
+        md: 6,
+      }}
+    >
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+          borderRadius: 4,
+
+          height: "100%",
+
+          bgcolor: isDark
+            ? "rgba(255,255,255,.03)"
+            : "#fff",
+
+          border: "1px solid",
+
+          borderColor: "divider",
+
+          transition: ".25s",
+
+          "&:hover": {
+            transform: "translateY(-5px)",
+
+            boxShadow:
+              "0 20px 40px rgba(124,58,237,.12)",
+          },
+        }}
+      >
+        <CheckCircleOutlinedIcon
+          sx={{
+            fontSize: 34,
+
+            color: "primary.main",
+
+            mb: 2,
+          }}
+        />
+
+        <Typography
+          variant="h6"
+          sx={{
+            fontWeight: 700,
+
+            color: "text.primary",
+          }}
+    
+         
+        >
+          {feature.title}
+        </Typography>
+
+        <Typography
+          color="text.secondary"
+         
+        >
+          {feature.desc}
+        </Typography>
+      </Paper>
+    </Grid>
+  ))}
+</Grid>
+{/* OUR VISION */}
+
+<Box
+  sx={{
+    mt: 8,
+    mb: 8,
+    p: {
+      xs: 4,
+      md: 6,
+    },
+
+    borderRadius: 5,
+
+    textAlign: "center",
+
+    background: isDark
+      ? "rgba(255,255,255,.03)"
+      : "rgba(124,58,237,.04)",
+
+    border: "1px solid",
+
+    borderColor: "divider",
+  }}
+>
+  <Typography
+    variant="overline"
+    sx={{
+      color: "primary.main",
+      letterSpacing: "3px",
+      fontWeight: 800,
+    }}
+  >
+    החזון שלנו
+  </Typography>
+
+  <Typography
+    variant="h3"
+    sx={{
+      mt: 2,
+      mb: 3,
+      fontWeight: 900,
+
+      fontSize: {
+        xs: "2rem",
+        md: "2.7rem",
+      },
+    }}
+  >
+    להפוך ניהול משימות
+    <br />
+    לפשוט יותר.
+  </Typography>
+
+  <Typography
+    sx={{
+      maxWidth: 760,
+      mx: "auto",
+      color: "text.secondary",
+      lineHeight: 2,
+      fontSize: {
+        xs: "1rem",
+        md: "1.12rem",
+      },
+    }}
+  >
+    אנחנו מאמינים שניהול נכון של משימות צריך להיות ברור,
+    נעים ומהיר. לכן יצרנו מערכת שמרכזת את כל הלוחות,
+    המשימות והפרויקטים במקום אחד, עם ממשק מודרני,
+    נוח לשימוש ומותאם לעבודה יומיומית.
+  </Typography>
+</Box>
+
+{/* WHY CHOOSE US */}
+
+<Typography
+  variant="h4"
+  sx={{
+    textAlign: "center",
+    fontWeight: 900,
+    mb: 5,
+  }}
+>
+  למה לבחור בנו?
+</Typography>
+
+<Grid container spacing={3}>
+  {[
+    {
+      number: "01",
+      title: "מהירות",
+      text: "יצירת לוחות ומשימות תוך שניות.",
+    },
+    {
+      number: "02",
+      title: "פשטות",
+      text: "ממשק נקי שקל ללמוד ולעבוד איתו.",
+    },
+    {
+      number: "03",
+      title: "אבטחה",
+      text: "הנתונים נשמרים בצורה מאובטחת בענן.",
+    },
+    {
+      number: "04",
+      title: "זמינות",
+      text: "גישה למערכת מכל מקום ובכל זמן.",
+    },
+  ].map((item) => (
+    <Grid
+      key={item.number}
+      size={{
+        xs: 12,
+        sm: 6,
+      }}
+    >
+      <Paper
+        elevation={0}
+        sx={{
+          p: 3,
+
+          borderRadius: 4,
+
+          height: "100%",
+
+          border: "1px solid",
+
+          borderColor: "divider",
+
+          transition: ".25s",
+
+          "&:hover": {
+            transform: "translateY(-6px)",
+
+            boxShadow:
+              "0 20px 45px rgba(124,58,237,.14)",
+          },
+        }}
+      >
+        <Typography
+          sx={{
+            fontSize: "2.2rem",
+            fontWeight: 900,
+            color: "primary.main",
+            mb: 1,
+          }}
+        >
+          {item.number}
+        </Typography>
+
+        <Typography
+          variant="h6"
+        >
+          {item.title}
+        </Typography>
+
+        <Typography color="text.secondary">
+          {item.text}
+        </Typography>
+      </Paper>
+    </Grid>
+  ))}
+</Grid>
             {/* רשימת יתרונות - בעיצוב גריד חדש */}
             <Box
               sx={{
